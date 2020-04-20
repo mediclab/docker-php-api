@@ -23,7 +23,7 @@
     },
     "extra": {
         "branch-alias": {
-            "4.1.36": "4.1.36.x-dev"
+            "4.1.41": "4.1.41.x-dev"
         }
     },
     "minimum-stability": "dev",
