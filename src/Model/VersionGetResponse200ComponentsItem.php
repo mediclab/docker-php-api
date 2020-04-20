@@ -25,19 +25,11 @@ class VersionGetResponse200ComponentsItem
      */
     protected $details;
 
-    /**
-     * @return string
-     */
     public function getName(): ?string
     {
         return $this->name;
     }
 
-    /**
-     * @param string $name
-     *
-     * @return self
-     */
     public function setName(?string $name): self
     {
         $this->name = $name;
@@ -45,19 +37,11 @@ class VersionGetResponse200ComponentsItem
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getVersion(): ?string
     {
         return $this->version;
     }
 
-    /**
-     * @param string $version
-     *
-     * @return self
-     */
     public function setVersion(?string $version): self
     {
         $this->version = $version;
@@ -75,8 +59,6 @@ class VersionGetResponse200ComponentsItem
 
     /**
      * @param mixed $details
-     *
-     * @return self
      */
     public function setDetails($details): self
     {

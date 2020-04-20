@@ -17,19 +17,19 @@ use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class ServiceSpecNetworksItemNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
+class ServiceSpecModeReplicatedJobNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
 {
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
 
     public function supportsDenormalization($data, $type, $format = null)
     {
-        return $type === 'Docker\\API\\Model\\ServiceSpecNetworksItem';
+        return $type === 'Docker\\API\\Model\\ServiceSpecModeReplicatedJob';
     }
 
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof \Docker\API\Model\ServiceSpecNetworksItem;
+        return get_class($data) === 'Docker\\API\\Model\\ServiceSpecModeReplicatedJob';
     }
 
     public function denormalize($data, $class, $format = null, array $context = [])
@@ -37,16 +37,12 @@ class ServiceSpecNetworksItemNormalizer implements DenormalizerInterface, Normal
         if (!is_object($data)) {
             return null;
         }
-        $object = new \Docker\API\Model\ServiceSpecNetworksItem();
-        if (property_exists($data, 'Target') && $data->{'Target'} !== null) {
-            $object->setTarget($data->{'Target'});
+        $object = new \Docker\API\Model\ServiceSpecModeReplicatedJob();
+        if (property_exists($data, 'MaxConcurrent') && $data->{'MaxConcurrent'} !== null) {
+            $object->setMaxConcurrent($data->{'MaxConcurrent'});
         }
-        if (property_exists($data, 'Aliases') && $data->{'Aliases'} !== null) {
-            $values = [];
-            foreach ($data->{'Aliases'} as $value) {
-                $values[] = $value;
-            }
-            $object->setAliases($values);
+        if (property_exists($data, 'TotalCompletions') && $data->{'TotalCompletions'} !== null) {
+            $object->setTotalCompletions($data->{'TotalCompletions'});
         }
 
         return $object;
@@ -55,15 +51,11 @@ class ServiceSpecNetworksItemNormalizer implements DenormalizerInterface, Normal
     public function normalize($object, $format = null, array $context = [])
     {
         $data = new \stdClass();
-        if (null !== $object->getTarget()) {
-            $data->{'Target'} = $object->getTarget();
+        if (null !== $object->getMaxConcurrent()) {
+            $data->{'MaxConcurrent'} = $object->getMaxConcurrent();
         }
-        if (null !== $object->getAliases()) {
-            $values = [];
-            foreach ($object->getAliases() as $value) {
-                $values[] = $value;
-            }
-            $data->{'Aliases'} = $values;
+        if (null !== $object->getTotalCompletions()) {
+            $data->{'TotalCompletions'} = $object->getTotalCompletions();
         }
 
         return $data;

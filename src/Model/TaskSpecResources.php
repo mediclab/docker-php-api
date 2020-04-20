@@ -27,8 +27,6 @@ class TaskSpecResources
 
     /**
      * An object describing the resources which can be advertised by a node and requested by a task.
-     *
-     * @return ResourceObject
      */
     public function getLimits(): ?ResourceObject
     {
@@ -37,10 +35,6 @@ class TaskSpecResources
 
     /**
      * An object describing the resources which can be advertised by a node and requested by a task.
-     *
-     * @param ResourceObject $limits
-     *
-     * @return self
      */
     public function setLimits(?ResourceObject $limits): self
     {
@@ -51,8 +45,6 @@ class TaskSpecResources
 
     /**
      * An object describing the resources which can be advertised by a node and requested by a task.
-     *
-     * @return ResourceObject
      */
     public function getReservation(): ?ResourceObject
     {
@@ -61,10 +53,6 @@ class TaskSpecResources
 
     /**
      * An object describing the resources which can be advertised by a node and requested by a task.
-     *
-     * @param ResourceObject $reservation
-     *
-     * @return self
      */
     public function setReservation(?ResourceObject $reservation): self
     {

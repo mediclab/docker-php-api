@@ -14,9 +14,8 @@
     },
     "require-dev": {
         "phpunit/phpunit": "^6.0",
-        "friendsofphp/php-cs-fixer": "^2.9",
+        "friendsofphp/php-cs-fixer": "^2.16",
         "jane-php/open-api": "^4.0",
-        "jane-php/json-schema": "^4.0",
         "amphp/artax": "^3.0"
     },
     "suggest": {

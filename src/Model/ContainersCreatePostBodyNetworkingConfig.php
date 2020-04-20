@@ -22,7 +22,7 @@ class ContainersCreatePostBodyNetworkingConfig
     /**
      * A mapping of network name to endpoint configuration for that network.
      *
-     * @return EndpointSettings[]
+     * @return EndpointSettings[]|null
      */
     public function getEndpointsConfig(): ?\ArrayObject
     {
@@ -32,9 +32,7 @@ class ContainersCreatePostBodyNetworkingConfig
     /**
      * A mapping of network name to endpoint configuration for that network.
      *
-     * @param EndpointSettings[] $endpointsConfig
-     *
-     * @return self
+     * @param EndpointSettings[]|null $endpointsConfig
      */
     public function setEndpointsConfig(?\ArrayObject $endpointsConfig): self
     {

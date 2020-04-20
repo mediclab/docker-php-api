@@ -14,10 +14,20 @@ class TaskSpecContainerSpecConfigsItem
 {
     /**
      * File represents a specific target that is backed by a file.
+
+    > **Note**: `Configs.File` and `Configs.Runtime` are mutually exclusive
      *
      * @var TaskSpecContainerSpecConfigsItemFile
      */
     protected $file;
+    /**
+     * Runtime represents a target that is not mounted into the container but is used by the task.
+
+    > **Note**: `Configs.File` and `Configs.Runtime` are mutually exclusive
+     *
+     * @var mixed
+     */
+    protected $runtime;
     /**
      * ConfigID represents the ID of the specific config that we're referencing.
      *
@@ -26,8 +36,6 @@ class TaskSpecContainerSpecConfigsItem
     protected $configID;
     /**
      * ConfigName is the name of the config that this references, but this is just provided for.
-    lookup/display purposes. The config in the reference will be identified by its ID.
-
      *
      * @var string
      */
@@ -35,8 +43,8 @@ class TaskSpecContainerSpecConfigsItem
 
     /**
      * File represents a specific target that is backed by a file.
-     *
-     * @return TaskSpecContainerSpecConfigsItemFile
+
+    > **Note**: `Configs.File` and `Configs.Runtime` are mutually exclusive
      */
     public function getFile(): ?TaskSpecContainerSpecConfigsItemFile
     {
@@ -45,10 +53,8 @@ class TaskSpecContainerSpecConfigsItem
 
     /**
      * File represents a specific target that is backed by a file.
-     *
-     * @param TaskSpecContainerSpecConfigsItemFile $file
-     *
-     * @return self
+
+    > **Note**: `Configs.File` and `Configs.Runtime` are mutually exclusive
      */
     public function setFile(?TaskSpecContainerSpecConfigsItemFile $file): self
     {
@@ -58,9 +64,33 @@ class TaskSpecContainerSpecConfigsItem
     }
 
     /**
-     * ConfigID represents the ID of the specific config that we're referencing.
+     * Runtime represents a target that is not mounted into the container but is used by the task.
+
+    > **Note**: `Configs.File` and `Configs.Runtime` are mutually exclusive
      *
-     * @return string
+     * @return mixed
+     */
+    public function getRuntime()
+    {
+        return $this->runtime;
+    }
+
+    /**
+     * Runtime represents a target that is not mounted into the container but is used by the task.
+
+    > **Note**: `Configs.File` and `Configs.Runtime` are mutually exclusive
+     *
+     * @param mixed $runtime
+     */
+    public function setRuntime($runtime): self
+    {
+        $this->runtime = $runtime;
+
+        return $this;
+    }
+
+    /**
+     * ConfigID represents the ID of the specific config that we're referencing.
      */
     public function getConfigID(): ?string
     {
@@ -69,10 +99,6 @@ class TaskSpecContainerSpecConfigsItem
 
     /**
      * ConfigID represents the ID of the specific config that we're referencing.
-     *
-     * @param string $configID
-     *
-     * @return self
      */
     public function setConfigID(?string $configID): self
     {
@@ -83,10 +109,6 @@ class TaskSpecContainerSpecConfigsItem
 
     /**
      * ConfigName is the name of the config that this references, but this is just provided for.
-    lookup/display purposes. The config in the reference will be identified by its ID.
-
-     *
-     * @return string
      */
     public function getConfigName(): ?string
     {
@@ -95,12 +117,6 @@ class TaskSpecContainerSpecConfigsItem
 
     /**
      * ConfigName is the name of the config that this references, but this is just provided for.
-    lookup/display purposes. The config in the reference will be identified by its ID.
-
-     *
-     * @param string $configName
-     *
-     * @return self
      */
     public function setConfigName(?string $configName): self
     {

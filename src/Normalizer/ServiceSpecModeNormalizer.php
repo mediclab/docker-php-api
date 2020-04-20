@@ -29,7 +29,7 @@ class ServiceSpecModeNormalizer implements DenormalizerInterface, NormalizerInte
 
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof \Docker\API\Model\ServiceSpecMode;
+        return get_class($data) === 'Docker\\API\\Model\\ServiceSpecMode';
     }
 
     public function denormalize($data, $class, $format = null, array $context = [])
@@ -44,6 +44,12 @@ class ServiceSpecModeNormalizer implements DenormalizerInterface, NormalizerInte
         if (property_exists($data, 'Global') && $data->{'Global'} !== null) {
             $object->setGlobal($data->{'Global'});
         }
+        if (property_exists($data, 'ReplicatedJob') && $data->{'ReplicatedJob'} !== null) {
+            $object->setReplicatedJob($this->denormalizer->denormalize($data->{'ReplicatedJob'}, 'Docker\\API\\Model\\ServiceSpecModeReplicatedJob', 'json', $context));
+        }
+        if (property_exists($data, 'GlobalJob') && $data->{'GlobalJob'} !== null) {
+            $object->setGlobalJob($data->{'GlobalJob'});
+        }
 
         return $object;
     }
@@ -56,6 +62,12 @@ class ServiceSpecModeNormalizer implements DenormalizerInterface, NormalizerInte
         }
         if (null !== $object->getGlobal()) {
             $data->{'Global'} = $object->getGlobal();
+        }
+        if (null !== $object->getReplicatedJob()) {
+            $data->{'ReplicatedJob'} = $this->normalizer->normalize($object->getReplicatedJob(), 'json', $context);
+        }
+        if (null !== $object->getGlobalJob()) {
+            $data->{'GlobalJob'} = $object->getGlobalJob();
         }
 
         return $data;

@@ -116,12 +116,6 @@ class TaskSpecContainerSpec
     protected $healthCheck;
     /**
      * A list of hostname/IP mappings to add to the container's `hosts`.
-    file. The format of extra hosts is specified in the
-    [hosts(5)](http://man7.org/linux/man-pages/man5/hosts.5.html)
-    man page:
-
-       IP_address canonical_hostname [aliases...]
-
      *
      * @var string[]
      */
@@ -150,11 +144,33 @@ class TaskSpecContainerSpec
      * @var string
      */
     protected $isolation;
+    /**
+     * Run an init inside the container that forwards signals and reaps processes. This field is omitted if empty, and the default (as configured on the daemon) is used.
+     *
+     * @var bool
+     */
+    protected $init;
+    /**
+     * Tune a container's PIDs limit. Set `0` for unlimited.
+     *
+     * @var int
+     */
+    protected $pidsLimit = 0;
+    /**
+     * Set kernel namedspaced parameters (sysctls) in the container.
+     *
+     * @var string[]
+     */
+    protected $sysctls;
+    /**
+     * A list of kernel capabilities to be available for container (this overrides the default set).
+     *
+     * @var string[]
+     */
+    protected $capabilities;
 
     /**
      * The image name to use for the container.
-     *
-     * @return string
      */
     public function getImage(): ?string
     {
@@ -163,10 +179,6 @@ class TaskSpecContainerSpec
 
     /**
      * The image name to use for the container.
-     *
-     * @param string $image
-     *
-     * @return self
      */
     public function setImage(?string $image): self
     {
@@ -178,7 +190,7 @@ class TaskSpecContainerSpec
     /**
      * User-defined key/value data.
      *
-     * @return string[]
+     * @return string[]|null
      */
     public function getLabels(): ?\ArrayObject
     {
@@ -188,9 +200,7 @@ class TaskSpecContainerSpec
     /**
      * User-defined key/value data.
      *
-     * @param string[] $labels
-     *
-     * @return self
+     * @param string[]|null $labels
      */
     public function setLabels(?\ArrayObject $labels): self
     {
@@ -202,7 +212,7 @@ class TaskSpecContainerSpec
     /**
      * The command to be run in the image.
      *
-     * @return string[]
+     * @return string[]|null
      */
     public function getCommand(): ?array
     {
@@ -212,9 +222,7 @@ class TaskSpecContainerSpec
     /**
      * The command to be run in the image.
      *
-     * @param string[] $command
-     *
-     * @return self
+     * @param string[]|null $command
      */
     public function setCommand(?array $command): self
     {
@@ -226,7 +234,7 @@ class TaskSpecContainerSpec
     /**
      * Arguments to the command.
      *
-     * @return string[]
+     * @return string[]|null
      */
     public function getArgs(): ?array
     {
@@ -236,9 +244,7 @@ class TaskSpecContainerSpec
     /**
      * Arguments to the command.
      *
-     * @param string[] $args
-     *
-     * @return self
+     * @param string[]|null $args
      */
     public function setArgs(?array $args): self
     {
@@ -249,8 +255,6 @@ class TaskSpecContainerSpec
 
     /**
      * The hostname to use for the container, as a valid RFC 1123 hostname.
-     *
-     * @return string
      */
     public function getHostname(): ?string
     {
@@ -259,10 +263,6 @@ class TaskSpecContainerSpec
 
     /**
      * The hostname to use for the container, as a valid RFC 1123 hostname.
-     *
-     * @param string $hostname
-     *
-     * @return self
      */
     public function setHostname(?string $hostname): self
     {
@@ -274,7 +274,7 @@ class TaskSpecContainerSpec
     /**
      * A list of environment variables in the form `VAR=value`.
      *
-     * @return string[]
+     * @return string[]|null
      */
     public function getEnv(): ?array
     {
@@ -284,9 +284,7 @@ class TaskSpecContainerSpec
     /**
      * A list of environment variables in the form `VAR=value`.
      *
-     * @param string[] $env
-     *
-     * @return self
+     * @param string[]|null $env
      */
     public function setEnv(?array $env): self
     {
@@ -297,8 +295,6 @@ class TaskSpecContainerSpec
 
     /**
      * The working directory for commands to run in.
-     *
-     * @return string
      */
     public function getDir(): ?string
     {
@@ -307,10 +303,6 @@ class TaskSpecContainerSpec
 
     /**
      * The working directory for commands to run in.
-     *
-     * @param string $dir
-     *
-     * @return self
      */
     public function setDir(?string $dir): self
     {
@@ -321,8 +313,6 @@ class TaskSpecContainerSpec
 
     /**
      * The user inside the container.
-     *
-     * @return string
      */
     public function getUser(): ?string
     {
@@ -331,10 +321,6 @@ class TaskSpecContainerSpec
 
     /**
      * The user inside the container.
-     *
-     * @param string $user
-     *
-     * @return self
      */
     public function setUser(?string $user): self
     {
@@ -346,7 +332,7 @@ class TaskSpecContainerSpec
     /**
      * A list of additional groups that the container process will run as.
      *
-     * @return string[]
+     * @return string[]|null
      */
     public function getGroups(): ?array
     {
@@ -356,9 +342,7 @@ class TaskSpecContainerSpec
     /**
      * A list of additional groups that the container process will run as.
      *
-     * @param string[] $groups
-     *
-     * @return self
+     * @param string[]|null $groups
      */
     public function setGroups(?array $groups): self
     {
@@ -369,8 +353,6 @@ class TaskSpecContainerSpec
 
     /**
      * Security options for the container.
-     *
-     * @return TaskSpecContainerSpecPrivileges
      */
     public function getPrivileges(): ?TaskSpecContainerSpecPrivileges
     {
@@ -379,10 +361,6 @@ class TaskSpecContainerSpec
 
     /**
      * Security options for the container.
-     *
-     * @param TaskSpecContainerSpecPrivileges $privileges
-     *
-     * @return self
      */
     public function setPrivileges(?TaskSpecContainerSpecPrivileges $privileges): self
     {
@@ -393,8 +371,6 @@ class TaskSpecContainerSpec
 
     /**
      * Whether a pseudo-TTY should be allocated.
-     *
-     * @return bool
      */
     public function getTTY(): ?bool
     {
@@ -403,10 +379,6 @@ class TaskSpecContainerSpec
 
     /**
      * Whether a pseudo-TTY should be allocated.
-     *
-     * @param bool $tTY
-     *
-     * @return self
      */
     public function setTTY(?bool $tTY): self
     {
@@ -417,8 +389,6 @@ class TaskSpecContainerSpec
 
     /**
      * Open `stdin`.
-     *
-     * @return bool
      */
     public function getOpenStdin(): ?bool
     {
@@ -427,10 +397,6 @@ class TaskSpecContainerSpec
 
     /**
      * Open `stdin`.
-     *
-     * @param bool $openStdin
-     *
-     * @return self
      */
     public function setOpenStdin(?bool $openStdin): self
     {
@@ -441,8 +407,6 @@ class TaskSpecContainerSpec
 
     /**
      * Mount the container's root filesystem as read only.
-     *
-     * @return bool
      */
     public function getReadOnly(): ?bool
     {
@@ -451,10 +415,6 @@ class TaskSpecContainerSpec
 
     /**
      * Mount the container's root filesystem as read only.
-     *
-     * @param bool $readOnly
-     *
-     * @return self
      */
     public function setReadOnly(?bool $readOnly): self
     {
@@ -466,7 +426,7 @@ class TaskSpecContainerSpec
     /**
      * Specification for mounts to be added to containers created as part of the service.
      *
-     * @return Mount[]
+     * @return Mount[]|null
      */
     public function getMounts(): ?array
     {
@@ -476,9 +436,7 @@ class TaskSpecContainerSpec
     /**
      * Specification for mounts to be added to containers created as part of the service.
      *
-     * @param Mount[] $mounts
-     *
-     * @return self
+     * @param Mount[]|null $mounts
      */
     public function setMounts(?array $mounts): self
     {
@@ -489,8 +447,6 @@ class TaskSpecContainerSpec
 
     /**
      * Signal to stop the container.
-     *
-     * @return string
      */
     public function getStopSignal(): ?string
     {
@@ -499,10 +455,6 @@ class TaskSpecContainerSpec
 
     /**
      * Signal to stop the container.
-     *
-     * @param string $stopSignal
-     *
-     * @return self
      */
     public function setStopSignal(?string $stopSignal): self
     {
@@ -513,8 +465,6 @@ class TaskSpecContainerSpec
 
     /**
      * Amount of time to wait for the container to terminate before forcefully killing it.
-     *
-     * @return int
      */
     public function getStopGracePeriod(): ?int
     {
@@ -523,10 +473,6 @@ class TaskSpecContainerSpec
 
     /**
      * Amount of time to wait for the container to terminate before forcefully killing it.
-     *
-     * @param int $stopGracePeriod
-     *
-     * @return self
      */
     public function setStopGracePeriod(?int $stopGracePeriod): self
     {
@@ -537,8 +483,6 @@ class TaskSpecContainerSpec
 
     /**
      * A test to perform to check that the container is healthy.
-     *
-     * @return HealthConfig
      */
     public function getHealthCheck(): ?HealthConfig
     {
@@ -547,10 +491,6 @@ class TaskSpecContainerSpec
 
     /**
      * A test to perform to check that the container is healthy.
-     *
-     * @param HealthConfig $healthCheck
-     *
-     * @return self
      */
     public function setHealthCheck(?HealthConfig $healthCheck): self
     {
@@ -561,14 +501,8 @@ class TaskSpecContainerSpec
 
     /**
      * A list of hostname/IP mappings to add to the container's `hosts`.
-    file. The format of extra hosts is specified in the
-    [hosts(5)](http://man7.org/linux/man-pages/man5/hosts.5.html)
-    man page:
-
-       IP_address canonical_hostname [aliases...]
-
      *
-     * @return string[]
+     * @return string[]|null
      */
     public function getHosts(): ?array
     {
@@ -577,16 +511,8 @@ class TaskSpecContainerSpec
 
     /**
      * A list of hostname/IP mappings to add to the container's `hosts`.
-    file. The format of extra hosts is specified in the
-    [hosts(5)](http://man7.org/linux/man-pages/man5/hosts.5.html)
-    man page:
-
-       IP_address canonical_hostname [aliases...]
-
      *
-     * @param string[] $hosts
-     *
-     * @return self
+     * @param string[]|null $hosts
      */
     public function setHosts(?array $hosts): self
     {
@@ -597,8 +523,6 @@ class TaskSpecContainerSpec
 
     /**
      * Specification for DNS related configurations in resolver configuration file (`resolv.conf`).
-     *
-     * @return TaskSpecContainerSpecDNSConfig
      */
     public function getDNSConfig(): ?TaskSpecContainerSpecDNSConfig
     {
@@ -607,10 +531,6 @@ class TaskSpecContainerSpec
 
     /**
      * Specification for DNS related configurations in resolver configuration file (`resolv.conf`).
-     *
-     * @param TaskSpecContainerSpecDNSConfig $dNSConfig
-     *
-     * @return self
      */
     public function setDNSConfig(?TaskSpecContainerSpecDNSConfig $dNSConfig): self
     {
@@ -622,7 +542,7 @@ class TaskSpecContainerSpec
     /**
      * Secrets contains references to zero or more secrets that will be exposed to the service.
      *
-     * @return TaskSpecContainerSpecSecretsItem[]
+     * @return TaskSpecContainerSpecSecretsItem[]|null
      */
     public function getSecrets(): ?array
     {
@@ -632,9 +552,7 @@ class TaskSpecContainerSpec
     /**
      * Secrets contains references to zero or more secrets that will be exposed to the service.
      *
-     * @param TaskSpecContainerSpecSecretsItem[] $secrets
-     *
-     * @return self
+     * @param TaskSpecContainerSpecSecretsItem[]|null $secrets
      */
     public function setSecrets(?array $secrets): self
     {
@@ -646,7 +564,7 @@ class TaskSpecContainerSpec
     /**
      * Configs contains references to zero or more configs that will be exposed to the service.
      *
-     * @return TaskSpecContainerSpecConfigsItem[]
+     * @return TaskSpecContainerSpecConfigsItem[]|null
      */
     public function getConfigs(): ?array
     {
@@ -656,9 +574,7 @@ class TaskSpecContainerSpec
     /**
      * Configs contains references to zero or more configs that will be exposed to the service.
      *
-     * @param TaskSpecContainerSpecConfigsItem[] $configs
-     *
-     * @return self
+     * @param TaskSpecContainerSpecConfigsItem[]|null $configs
      */
     public function setConfigs(?array $configs): self
     {
@@ -669,8 +585,6 @@ class TaskSpecContainerSpec
 
     /**
      * Isolation technology of the containers running the service. (Windows only).
-     *
-     * @return string
      */
     public function getIsolation(): ?string
     {
@@ -679,14 +593,90 @@ class TaskSpecContainerSpec
 
     /**
      * Isolation technology of the containers running the service. (Windows only).
-     *
-     * @param string $isolation
-     *
-     * @return self
      */
     public function setIsolation(?string $isolation): self
     {
         $this->isolation = $isolation;
+
+        return $this;
+    }
+
+    /**
+     * Run an init inside the container that forwards signals and reaps processes. This field is omitted if empty, and the default (as configured on the daemon) is used.
+     */
+    public function getInit(): ?bool
+    {
+        return $this->init;
+    }
+
+    /**
+     * Run an init inside the container that forwards signals and reaps processes. This field is omitted if empty, and the default (as configured on the daemon) is used.
+     */
+    public function setInit(?bool $init): self
+    {
+        $this->init = $init;
+
+        return $this;
+    }
+
+    /**
+     * Tune a container's PIDs limit. Set `0` for unlimited.
+     */
+    public function getPidsLimit(): ?int
+    {
+        return $this->pidsLimit;
+    }
+
+    /**
+     * Tune a container's PIDs limit. Set `0` for unlimited.
+     */
+    public function setPidsLimit(?int $pidsLimit): self
+    {
+        $this->pidsLimit = $pidsLimit;
+
+        return $this;
+    }
+
+    /**
+     * Set kernel namedspaced parameters (sysctls) in the container.
+     *
+     * @return string[]|null
+     */
+    public function getSysctls(): ?\ArrayObject
+    {
+        return $this->sysctls;
+    }
+
+    /**
+     * Set kernel namedspaced parameters (sysctls) in the container.
+     *
+     * @param string[]|null $sysctls
+     */
+    public function setSysctls(?\ArrayObject $sysctls): self
+    {
+        $this->sysctls = $sysctls;
+
+        return $this;
+    }
+
+    /**
+     * A list of kernel capabilities to be available for container (this overrides the default set).
+     *
+     * @return string[]|null
+     */
+    public function getCapabilities(): ?array
+    {
+        return $this->capabilities;
+    }
+
+    /**
+     * A list of kernel capabilities to be available for container (this overrides the default set).
+     *
+     * @param string[]|null $capabilities
+     */
+    public function setCapabilities(?array $capabilities): self
+    {
+        $this->capabilities = $capabilities;
 
         return $this;
     }

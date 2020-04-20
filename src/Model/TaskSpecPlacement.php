@@ -13,7 +13,7 @@ namespace Docker\API\Model;
 class TaskSpecPlacement
 {
     /**
-     * An array of constraints.
+     * An array of constraint expressions to limit the set of nodes where.
      *
      * @var string[]
      */
@@ -25,20 +25,22 @@ class TaskSpecPlacement
      */
     protected $preferences;
     /**
+     * Maximum number of replicas for per node (default value is 0, which is unlimited).
+     *
+     * @var int
+     */
+    protected $maxReplicas = 0;
+    /**
      * Platforms stores all the platforms that the service's image can.
-    run on. This field is used in the platform filter for scheduling.
-    If empty, then the platform filter is off, meaning there are no
-    scheduling restrictions.
-
      *
      * @var Platform[]
      */
     protected $platforms;
 
     /**
-     * An array of constraints.
+     * An array of constraint expressions to limit the set of nodes where.
      *
-     * @return string[]
+     * @return string[]|null
      */
     public function getConstraints(): ?array
     {
@@ -46,11 +48,9 @@ class TaskSpecPlacement
     }
 
     /**
-     * An array of constraints.
+     * An array of constraint expressions to limit the set of nodes where.
      *
-     * @param string[] $constraints
-     *
-     * @return self
+     * @param string[]|null $constraints
      */
     public function setConstraints(?array $constraints): self
     {
@@ -62,7 +62,7 @@ class TaskSpecPlacement
     /**
      * Preferences provide a way to make the scheduler aware of factors such as topology. They are provided in order from highest to lowest precedence.
      *
-     * @return TaskSpecPlacementPreferencesItem[]
+     * @return TaskSpecPlacementPreferencesItem[]|null
      */
     public function getPreferences(): ?array
     {
@@ -72,9 +72,7 @@ class TaskSpecPlacement
     /**
      * Preferences provide a way to make the scheduler aware of factors such as topology. They are provided in order from highest to lowest precedence.
      *
-     * @param TaskSpecPlacementPreferencesItem[] $preferences
-     *
-     * @return self
+     * @param TaskSpecPlacementPreferencesItem[]|null $preferences
      */
     public function setPreferences(?array $preferences): self
     {
@@ -84,13 +82,27 @@ class TaskSpecPlacement
     }
 
     /**
-     * Platforms stores all the platforms that the service's image can.
-    run on. This field is used in the platform filter for scheduling.
-    If empty, then the platform filter is off, meaning there are no
-    scheduling restrictions.
+     * Maximum number of replicas for per node (default value is 0, which is unlimited).
+     */
+    public function getMaxReplicas(): ?int
+    {
+        return $this->maxReplicas;
+    }
 
+    /**
+     * Maximum number of replicas for per node (default value is 0, which is unlimited).
+     */
+    public function setMaxReplicas(?int $maxReplicas): self
+    {
+        $this->maxReplicas = $maxReplicas;
+
+        return $this;
+    }
+
+    /**
+     * Platforms stores all the platforms that the service's image can.
      *
-     * @return Platform[]
+     * @return Platform[]|null
      */
     public function getPlatforms(): ?array
     {
@@ -99,14 +111,8 @@ class TaskSpecPlacement
 
     /**
      * Platforms stores all the platforms that the service's image can.
-    run on. This field is used in the platform filter for scheduling.
-    If empty, then the platform filter is off, meaning there are no
-    scheduling restrictions.
-
      *
-     * @param Platform[] $platforms
-     *
-     * @return self
+     * @param Platform[]|null $platforms
      */
     public function setPlatforms(?array $platforms): self
     {

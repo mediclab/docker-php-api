@@ -29,7 +29,7 @@ class ServiceNormalizer implements DenormalizerInterface, NormalizerInterface, D
 
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof \Docker\API\Model\Service;
+        return get_class($data) === 'Docker\\API\\Model\\Service';
     }
 
     public function denormalize($data, $class, $format = null, array $context = [])
@@ -59,6 +59,12 @@ class ServiceNormalizer implements DenormalizerInterface, NormalizerInterface, D
         if (property_exists($data, 'UpdateStatus') && $data->{'UpdateStatus'} !== null) {
             $object->setUpdateStatus($this->denormalizer->denormalize($data->{'UpdateStatus'}, 'Docker\\API\\Model\\ServiceUpdateStatus', 'json', $context));
         }
+        if (property_exists($data, 'ServiceStatus') && $data->{'ServiceStatus'} !== null) {
+            $object->setServiceStatus($this->denormalizer->denormalize($data->{'ServiceStatus'}, 'Docker\\API\\Model\\ServiceServiceStatus', 'json', $context));
+        }
+        if (property_exists($data, 'JobStatus') && $data->{'JobStatus'} !== null) {
+            $object->setJobStatus($this->denormalizer->denormalize($data->{'JobStatus'}, 'Docker\\API\\Model\\ServiceJobStatus', 'json', $context));
+        }
 
         return $object;
     }
@@ -86,6 +92,12 @@ class ServiceNormalizer implements DenormalizerInterface, NormalizerInterface, D
         }
         if (null !== $object->getUpdateStatus()) {
             $data->{'UpdateStatus'} = $this->normalizer->normalize($object->getUpdateStatus(), 'json', $context);
+        }
+        if (null !== $object->getServiceStatus()) {
+            $data->{'ServiceStatus'} = $this->normalizer->normalize($object->getServiceStatus(), 'json', $context);
+        }
+        if (null !== $object->getJobStatus()) {
+            $data->{'JobStatus'} = $this->normalizer->normalize($object->getJobStatus(), 'json', $context);
         }
 
         return $data;

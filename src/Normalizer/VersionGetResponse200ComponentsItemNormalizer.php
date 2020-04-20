@@ -29,7 +29,7 @@ class VersionGetResponse200ComponentsItemNormalizer implements DenormalizerInter
 
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof \Docker\API\Model\VersionGetResponse200ComponentsItem;
+        return get_class($data) === 'Docker\\API\\Model\\VersionGetResponse200ComponentsItem';
     }
 
     public function denormalize($data, $class, $format = null, array $context = [])

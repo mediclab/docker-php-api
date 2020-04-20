@@ -61,19 +61,11 @@ class VersionGetResponse200
      */
     protected $buildTime;
 
-    /**
-     * @return VersionGetResponse200Platform
-     */
     public function getPlatform(): ?VersionGetResponse200Platform
     {
         return $this->platform;
     }
 
-    /**
-     * @param VersionGetResponse200Platform $platform
-     *
-     * @return self
-     */
     public function setPlatform(?VersionGetResponse200Platform $platform): self
     {
         $this->platform = $platform;
@@ -82,7 +74,7 @@ class VersionGetResponse200
     }
 
     /**
-     * @return VersionGetResponse200ComponentsItem[]
+     * @return VersionGetResponse200ComponentsItem[]|null
      */
     public function getComponents(): ?array
     {
@@ -90,9 +82,7 @@ class VersionGetResponse200
     }
 
     /**
-     * @param VersionGetResponse200ComponentsItem[] $components
-     *
-     * @return self
+     * @param VersionGetResponse200ComponentsItem[]|null $components
      */
     public function setComponents(?array $components): self
     {
@@ -101,19 +91,11 @@ class VersionGetResponse200
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getVersion(): ?string
     {
         return $this->version;
     }
 
-    /**
-     * @param string $version
-     *
-     * @return self
-     */
     public function setVersion(?string $version): self
     {
         $this->version = $version;
@@ -121,19 +103,11 @@ class VersionGetResponse200
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getApiVersion(): ?string
     {
         return $this->apiVersion;
     }
 
-    /**
-     * @param string $apiVersion
-     *
-     * @return self
-     */
     public function setApiVersion(?string $apiVersion): self
     {
         $this->apiVersion = $apiVersion;
@@ -141,19 +115,11 @@ class VersionGetResponse200
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getMinAPIVersion(): ?string
     {
         return $this->minAPIVersion;
     }
 
-    /**
-     * @param string $minAPIVersion
-     *
-     * @return self
-     */
     public function setMinAPIVersion(?string $minAPIVersion): self
     {
         $this->minAPIVersion = $minAPIVersion;
@@ -161,19 +127,11 @@ class VersionGetResponse200
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getGitCommit(): ?string
     {
         return $this->gitCommit;
     }
 
-    /**
-     * @param string $gitCommit
-     *
-     * @return self
-     */
     public function setGitCommit(?string $gitCommit): self
     {
         $this->gitCommit = $gitCommit;
@@ -181,19 +139,11 @@ class VersionGetResponse200
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getGoVersion(): ?string
     {
         return $this->goVersion;
     }
 
-    /**
-     * @param string $goVersion
-     *
-     * @return self
-     */
     public function setGoVersion(?string $goVersion): self
     {
         $this->goVersion = $goVersion;
@@ -201,19 +151,11 @@ class VersionGetResponse200
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getOs(): ?string
     {
         return $this->os;
     }
 
-    /**
-     * @param string $os
-     *
-     * @return self
-     */
     public function setOs(?string $os): self
     {
         $this->os = $os;
@@ -221,19 +163,11 @@ class VersionGetResponse200
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getArch(): ?string
     {
         return $this->arch;
     }
 
-    /**
-     * @param string $arch
-     *
-     * @return self
-     */
     public function setArch(?string $arch): self
     {
         $this->arch = $arch;
@@ -241,19 +175,11 @@ class VersionGetResponse200
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getKernelVersion(): ?string
     {
         return $this->kernelVersion;
     }
 
-    /**
-     * @param string $kernelVersion
-     *
-     * @return self
-     */
     public function setKernelVersion(?string $kernelVersion): self
     {
         $this->kernelVersion = $kernelVersion;
@@ -261,19 +187,11 @@ class VersionGetResponse200
         return $this;
     }
 
-    /**
-     * @return bool
-     */
     public function getExperimental(): ?bool
     {
         return $this->experimental;
     }
 
-    /**
-     * @param bool $experimental
-     *
-     * @return self
-     */
     public function setExperimental(?bool $experimental): self
     {
         $this->experimental = $experimental;
@@ -281,19 +199,11 @@ class VersionGetResponse200
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getBuildTime(): ?string
     {
         return $this->buildTime;
     }
 
-    /**
-     * @param string $buildTime
-     *
-     * @return self
-     */
     public function setBuildTime(?string $buildTime): self
     {
         $this->buildTime = $buildTime;

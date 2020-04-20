@@ -29,7 +29,7 @@ class TaskSpecContainerSpecNormalizer implements DenormalizerInterface, Normaliz
 
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof \Docker\API\Model\TaskSpecContainerSpec;
+        return get_class($data) === 'Docker\\API\\Model\\TaskSpecContainerSpec';
     }
 
     public function denormalize($data, $class, $format = null, array $context = [])
@@ -140,6 +140,26 @@ class TaskSpecContainerSpecNormalizer implements DenormalizerInterface, Normaliz
         if (property_exists($data, 'Isolation') && $data->{'Isolation'} !== null) {
             $object->setIsolation($data->{'Isolation'});
         }
+        if (property_exists($data, 'Init') && $data->{'Init'} !== null) {
+            $object->setInit($data->{'Init'});
+        }
+        if (property_exists($data, 'PidsLimit') && $data->{'PidsLimit'} !== null) {
+            $object->setPidsLimit($data->{'PidsLimit'});
+        }
+        if (property_exists($data, 'Sysctls') && $data->{'Sysctls'} !== null) {
+            $values_9 = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
+            foreach ($data->{'Sysctls'} as $key_1 => $value_9) {
+                $values_9[$key_1] = $value_9;
+            }
+            $object->setSysctls($values_9);
+        }
+        if (property_exists($data, 'Capabilities') && $data->{'Capabilities'} !== null) {
+            $values_10 = [];
+            foreach ($data->{'Capabilities'} as $value_10) {
+                $values_10[] = $value_10;
+            }
+            $object->setCapabilities($values_10);
+        }
 
         return $object;
     }
@@ -248,6 +268,26 @@ class TaskSpecContainerSpecNormalizer implements DenormalizerInterface, Normaliz
         }
         if (null !== $object->getIsolation()) {
             $data->{'Isolation'} = $object->getIsolation();
+        }
+        if (null !== $object->getInit()) {
+            $data->{'Init'} = $object->getInit();
+        }
+        if (null !== $object->getPidsLimit()) {
+            $data->{'PidsLimit'} = $object->getPidsLimit();
+        }
+        if (null !== $object->getSysctls()) {
+            $values_9 = new \stdClass();
+            foreach ($object->getSysctls() as $key_1 => $value_9) {
+                $values_9->{$key_1} = $value_9;
+            }
+            $data->{'Sysctls'} = $values_9;
+        }
+        if (null !== $object->getCapabilities()) {
+            $values_10 = [];
+            foreach ($object->getCapabilities() as $value_10) {
+                $values_10[] = $value_10;
+            }
+            $data->{'Capabilities'} = $values_10;
         }
 
         return $data;

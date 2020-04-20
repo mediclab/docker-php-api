@@ -16,21 +16,25 @@ class ContainerStats extends \Jane\OpenApiRuntime\Client\BaseEndpoint implements
 
     /**
      * This endpoint returns a live stream of a container’s resource usage.
-    statistics.
 
-    The `precpu_stats` is the CPU statistic of last read, which is used
-    for calculating the CPU usage percentage. It is not the same as the
-    `cpu_stats` field.
+    The `precpu_stats` is the CPU statistic of the *previous* read, and is
+    used to calculate the CPU usage percentage. It is not an exact copy
+    of the `cpu_stats` field.
 
     If either `precpu_stats.online_cpus` or `cpu_stats.online_cpus` is
     nil then for compatibility with older daemons the length of the
     corresponding `cpu_usage.percpu_usage` array should be used.
 
+    On a cgroup v2 host, the following fields are not set
+     * `blkio_stats`: all fields other than `io_service_bytes_recursive`
+     * `cpu_stats`: `cpu_usage.percpu_usage`
+     * `memory_stats`: `max_usage` and `failcnt`
      *
      * @param string $id              ID or name of the container
      * @param array  $queryParameters {
      *
      *     @var bool $stream Stream the output. If false, the stats will be output once and then it will disconnect.
+     *     @var bool $one-shot Only get a single stat instead of waiting for 2 cycles. Must be used with stream=false
      * }
      */
     public function __construct(string $id, array $queryParameters = [])
@@ -39,7 +43,8 @@ class ContainerStats extends \Jane\OpenApiRuntime\Client\BaseEndpoint implements
         $this->queryParameters = $queryParameters;
     }
 
-    use \Jane\OpenApiRuntime\Client\AmpArtaxEndpointTrait, \Jane\OpenApiRuntime\Client\Psr7HttplugEndpointTrait;
+    use \Jane\OpenApiRuntime\Client\AmpArtaxEndpointTrait;
+    use \Jane\OpenApiRuntime\Client\Psr7HttplugEndpointTrait;
 
     public function getMethod(): string
     {
@@ -51,7 +56,7 @@ class ContainerStats extends \Jane\OpenApiRuntime\Client\BaseEndpoint implements
         return str_replace(['{id}'], [$this->id], '/containers/{id}/stats');
     }
 
-    public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, \Http\Message\StreamFactory $streamFactory = null): array
+    public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
     {
         return [[], null];
     }
@@ -64,10 +69,11 @@ class ContainerStats extends \Jane\OpenApiRuntime\Client\BaseEndpoint implements
     protected function getQueryOptionsResolver(): \Symfony\Component\OptionsResolver\OptionsResolver
     {
         $optionsResolver = parent::getQueryOptionsResolver();
-        $optionsResolver->setDefined(['stream']);
+        $optionsResolver->setDefined(['stream', 'one-shot']);
         $optionsResolver->setRequired([]);
-        $optionsResolver->setDefaults(['stream' => true]);
+        $optionsResolver->setDefaults(['stream' => true, 'one-shot' => false]);
         $optionsResolver->setAllowedTypes('stream', ['bool']);
+        $optionsResolver->setAllowedTypes('one-shot', ['bool']);
 
         return $optionsResolver;
     }
@@ -77,8 +83,10 @@ class ContainerStats extends \Jane\OpenApiRuntime\Client\BaseEndpoint implements
      *
      * @throws \Docker\API\Exception\ContainerStatsNotFoundException
      * @throws \Docker\API\Exception\ContainerStatsInternalServerErrorException
+     *
+     * @return null
      */
-    protected function transformResponseBody(string $body, int $status, \Symfony\Component\Serializer\SerializerInterface $serializer)
+    protected function transformResponseBody(string $body, int $status, \Symfony\Component\Serializer\SerializerInterface $serializer, ?string $contentType)
     {
         if (200 === $status) {
             return json_decode($body);

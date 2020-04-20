@@ -29,7 +29,7 @@ class TaskNormalizer implements DenormalizerInterface, NormalizerInterface, Deno
 
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof \Docker\API\Model\Task;
+        return get_class($data) === 'Docker\\API\\Model\\Task';
     }
 
     public function denormalize($data, $class, $format = null, array $context = [])
@@ -85,6 +85,9 @@ class TaskNormalizer implements DenormalizerInterface, NormalizerInterface, Deno
         if (property_exists($data, 'DesiredState') && $data->{'DesiredState'} !== null) {
             $object->setDesiredState($data->{'DesiredState'});
         }
+        if (property_exists($data, 'JobIteration') && $data->{'JobIteration'} !== null) {
+            $object->setJobIteration($this->denormalizer->denormalize($data->{'JobIteration'}, 'Docker\\API\\Model\\ObjectVersion', 'json', $context));
+        }
 
         return $object;
     }
@@ -138,6 +141,9 @@ class TaskNormalizer implements DenormalizerInterface, NormalizerInterface, Deno
         }
         if (null !== $object->getDesiredState()) {
             $data->{'DesiredState'} = $object->getDesiredState();
+        }
+        if (null !== $object->getJobIteration()) {
+            $data->{'JobIteration'} = $this->normalizer->normalize($object->getJobIteration(), 'json', $context);
         }
 
         return $data;

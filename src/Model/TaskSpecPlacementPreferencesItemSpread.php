@@ -21,8 +21,6 @@ class TaskSpecPlacementPreferencesItemSpread
 
     /**
      * label descriptor, such as engine.labels.az.
-     *
-     * @return string
      */
     public function getSpreadDescriptor(): ?string
     {
@@ -31,10 +29,6 @@ class TaskSpecPlacementPreferencesItemSpread
 
     /**
      * label descriptor, such as engine.labels.az.
-     *
-     * @param string $spreadDescriptor
-     *
-     * @return self
      */
     public function setSpreadDescriptor(?string $spreadDescriptor): self
     {

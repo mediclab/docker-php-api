@@ -23,7 +23,7 @@ class VolumesCreatePostBody
      *
      * @var string
      */
-    protected $driver;
+    protected $driver = 'local';
     /**
      * A mapping of driver options and values. These options are passed directly to the driver and are driver specific.
      *
@@ -39,8 +39,6 @@ class VolumesCreatePostBody
 
     /**
      * The new volume's name. If not specified, Docker generates a name.
-     *
-     * @return string
      */
     public function getName(): ?string
     {
@@ -49,10 +47,6 @@ class VolumesCreatePostBody
 
     /**
      * The new volume's name. If not specified, Docker generates a name.
-     *
-     * @param string $name
-     *
-     * @return self
      */
     public function setName(?string $name): self
     {
@@ -63,8 +57,6 @@ class VolumesCreatePostBody
 
     /**
      * Name of the volume driver to use.
-     *
-     * @return string
      */
     public function getDriver(): ?string
     {
@@ -73,10 +65,6 @@ class VolumesCreatePostBody
 
     /**
      * Name of the volume driver to use.
-     *
-     * @param string $driver
-     *
-     * @return self
      */
     public function setDriver(?string $driver): self
     {
@@ -88,7 +76,7 @@ class VolumesCreatePostBody
     /**
      * A mapping of driver options and values. These options are passed directly to the driver and are driver specific.
      *
-     * @return string[]
+     * @return string[]|null
      */
     public function getDriverOpts(): ?\ArrayObject
     {
@@ -98,9 +86,7 @@ class VolumesCreatePostBody
     /**
      * A mapping of driver options and values. These options are passed directly to the driver and are driver specific.
      *
-     * @param string[] $driverOpts
-     *
-     * @return self
+     * @param string[]|null $driverOpts
      */
     public function setDriverOpts(?\ArrayObject $driverOpts): self
     {
@@ -112,7 +98,7 @@ class VolumesCreatePostBody
     /**
      * User-defined key/value metadata.
      *
-     * @return string[]
+     * @return string[]|null
      */
     public function getLabels(): ?\ArrayObject
     {
@@ -122,9 +108,7 @@ class VolumesCreatePostBody
     /**
      * User-defined key/value metadata.
      *
-     * @param string[] $labels
-     *
-     * @return self
+     * @param string[]|null $labels
      */
     public function setLabels(?\ArrayObject $labels): self
     {

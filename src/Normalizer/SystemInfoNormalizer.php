@@ -29,7 +29,7 @@ class SystemInfoNormalizer implements DenormalizerInterface, NormalizerInterface
 
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof \Docker\API\Model\SystemInfo;
+        return get_class($data) === 'Docker\\API\\Model\\SystemInfo';
     }
 
     public function denormalize($data, $class, $format = null, array $context = [])
@@ -73,17 +73,6 @@ class SystemInfoNormalizer implements DenormalizerInterface, NormalizerInterface
         if (property_exists($data, 'DockerRootDir') && $data->{'DockerRootDir'} !== null) {
             $object->setDockerRootDir($data->{'DockerRootDir'});
         }
-        if (property_exists($data, 'SystemStatus') && $data->{'SystemStatus'} !== null) {
-            $values_2 = [];
-            foreach ($data->{'SystemStatus'} as $value_2) {
-                $values_3 = [];
-                foreach ($value_2 as $value_3) {
-                    $values_3[] = $value_3;
-                }
-                $values_2[] = $values_3;
-            }
-            $object->setSystemStatus($values_2);
-        }
         if (property_exists($data, 'Plugins') && $data->{'Plugins'} !== null) {
             $object->setPlugins($this->denormalizer->denormalize($data->{'Plugins'}, 'Docker\\API\\Model\\PluginsInfo', 'json', $context));
         }
@@ -107,6 +96,9 @@ class SystemInfoNormalizer implements DenormalizerInterface, NormalizerInterface
         }
         if (property_exists($data, 'CPUSet') && $data->{'CPUSet'} !== null) {
             $object->setCPUSet($data->{'CPUSet'});
+        }
+        if (property_exists($data, 'PidsLimit') && $data->{'PidsLimit'} !== null) {
+            $object->setPidsLimit($data->{'PidsLimit'});
         }
         if (property_exists($data, 'OomKillDisable') && $data->{'OomKillDisable'} !== null) {
             $object->setOomKillDisable($data->{'OomKillDisable'});
@@ -147,6 +139,9 @@ class SystemInfoNormalizer implements DenormalizerInterface, NormalizerInterface
         if (property_exists($data, 'OperatingSystem') && $data->{'OperatingSystem'} !== null) {
             $object->setOperatingSystem($data->{'OperatingSystem'});
         }
+        if (property_exists($data, 'OSVersion') && $data->{'OSVersion'} !== null) {
+            $object->setOSVersion($data->{'OSVersion'});
+        }
         if (property_exists($data, 'OSType') && $data->{'OSType'} !== null) {
             $object->setOSType($data->{'OSType'});
         }
@@ -166,11 +161,11 @@ class SystemInfoNormalizer implements DenormalizerInterface, NormalizerInterface
             $object->setRegistryConfig($this->denormalizer->denormalize($data->{'RegistryConfig'}, 'Docker\\API\\Model\\RegistryServiceConfig', 'json', $context));
         }
         if (property_exists($data, 'GenericResources') && $data->{'GenericResources'} !== null) {
-            $values_4 = [];
-            foreach ($data->{'GenericResources'} as $value_4) {
-                $values_4[] = $this->denormalizer->denormalize($value_4, 'Docker\\API\\Model\\GenericResourcesItem', 'json', $context);
+            $values_2 = [];
+            foreach ($data->{'GenericResources'} as $value_2) {
+                $values_2[] = $this->denormalizer->denormalize($value_2, 'Docker\\API\\Model\\GenericResourcesItem', 'json', $context);
             }
-            $object->setGenericResources($values_4);
+            $object->setGenericResources($values_2);
         }
         if (property_exists($data, 'HttpProxy') && $data->{'HttpProxy'} !== null) {
             $object->setHttpProxy($data->{'HttpProxy'});
@@ -185,11 +180,11 @@ class SystemInfoNormalizer implements DenormalizerInterface, NormalizerInterface
             $object->setName($data->{'Name'});
         }
         if (property_exists($data, 'Labels') && $data->{'Labels'} !== null) {
-            $values_5 = [];
-            foreach ($data->{'Labels'} as $value_5) {
-                $values_5[] = $value_5;
+            $values_3 = [];
+            foreach ($data->{'Labels'} as $value_3) {
+                $values_3[] = $value_3;
             }
-            $object->setLabels($values_5);
+            $object->setLabels($values_3);
         }
         if (property_exists($data, 'ExperimentalBuild') && $data->{'ExperimentalBuild'} !== null) {
             $object->setExperimentalBuild($data->{'ExperimentalBuild'});
@@ -204,11 +199,11 @@ class SystemInfoNormalizer implements DenormalizerInterface, NormalizerInterface
             $object->setClusterAdvertise($data->{'ClusterAdvertise'});
         }
         if (property_exists($data, 'Runtimes') && $data->{'Runtimes'} !== null) {
-            $values_6 = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
-            foreach ($data->{'Runtimes'} as $key => $value_6) {
-                $values_6[$key] = $this->denormalizer->denormalize($value_6, 'Docker\\API\\Model\\Runtime', 'json', $context);
+            $values_4 = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
+            foreach ($data->{'Runtimes'} as $key => $value_4) {
+                $values_4[$key] = $this->denormalizer->denormalize($value_4, 'Docker\\API\\Model\\Runtime', 'json', $context);
             }
-            $object->setRuntimes($values_6);
+            $object->setRuntimes($values_4);
         }
         if (property_exists($data, 'DefaultRuntime') && $data->{'DefaultRuntime'} !== null) {
             $object->setDefaultRuntime($data->{'DefaultRuntime'});
@@ -235,11 +230,21 @@ class SystemInfoNormalizer implements DenormalizerInterface, NormalizerInterface
             $object->setInitCommit($this->denormalizer->denormalize($data->{'InitCommit'}, 'Docker\\API\\Model\\Commit', 'json', $context));
         }
         if (property_exists($data, 'SecurityOptions') && $data->{'SecurityOptions'} !== null) {
-            $values_7 = [];
-            foreach ($data->{'SecurityOptions'} as $value_7) {
-                $values_7[] = $value_7;
+            $values_5 = [];
+            foreach ($data->{'SecurityOptions'} as $value_5) {
+                $values_5[] = $value_5;
             }
-            $object->setSecurityOptions($values_7);
+            $object->setSecurityOptions($values_5);
+        }
+        if (property_exists($data, 'ProductLicense') && $data->{'ProductLicense'} !== null) {
+            $object->setProductLicense($data->{'ProductLicense'});
+        }
+        if (property_exists($data, 'Warnings') && $data->{'Warnings'} !== null) {
+            $values_6 = [];
+            foreach ($data->{'Warnings'} as $value_6) {
+                $values_6[] = $value_6;
+            }
+            $object->setWarnings($values_6);
         }
 
         return $object;
@@ -283,17 +288,6 @@ class SystemInfoNormalizer implements DenormalizerInterface, NormalizerInterface
         if (null !== $object->getDockerRootDir()) {
             $data->{'DockerRootDir'} = $object->getDockerRootDir();
         }
-        if (null !== $object->getSystemStatus()) {
-            $values_2 = [];
-            foreach ($object->getSystemStatus() as $value_2) {
-                $values_3 = [];
-                foreach ($value_2 as $value_3) {
-                    $values_3[] = $value_3;
-                }
-                $values_2[] = $values_3;
-            }
-            $data->{'SystemStatus'} = $values_2;
-        }
         if (null !== $object->getPlugins()) {
             $data->{'Plugins'} = $this->normalizer->normalize($object->getPlugins(), 'json', $context);
         }
@@ -317,6 +311,9 @@ class SystemInfoNormalizer implements DenormalizerInterface, NormalizerInterface
         }
         if (null !== $object->getCPUSet()) {
             $data->{'CPUSet'} = $object->getCPUSet();
+        }
+        if (null !== $object->getPidsLimit()) {
+            $data->{'PidsLimit'} = $object->getPidsLimit();
         }
         if (null !== $object->getOomKillDisable()) {
             $data->{'OomKillDisable'} = $object->getOomKillDisable();
@@ -357,6 +354,9 @@ class SystemInfoNormalizer implements DenormalizerInterface, NormalizerInterface
         if (null !== $object->getOperatingSystem()) {
             $data->{'OperatingSystem'} = $object->getOperatingSystem();
         }
+        if (null !== $object->getOSVersion()) {
+            $data->{'OSVersion'} = $object->getOSVersion();
+        }
         if (null !== $object->getOSType()) {
             $data->{'OSType'} = $object->getOSType();
         }
@@ -376,11 +376,11 @@ class SystemInfoNormalizer implements DenormalizerInterface, NormalizerInterface
             $data->{'RegistryConfig'} = $this->normalizer->normalize($object->getRegistryConfig(), 'json', $context);
         }
         if (null !== $object->getGenericResources()) {
-            $values_4 = [];
-            foreach ($object->getGenericResources() as $value_4) {
-                $values_4[] = $this->normalizer->normalize($value_4, 'json', $context);
+            $values_2 = [];
+            foreach ($object->getGenericResources() as $value_2) {
+                $values_2[] = $this->normalizer->normalize($value_2, 'json', $context);
             }
-            $data->{'GenericResources'} = $values_4;
+            $data->{'GenericResources'} = $values_2;
         }
         if (null !== $object->getHttpProxy()) {
             $data->{'HttpProxy'} = $object->getHttpProxy();
@@ -395,11 +395,11 @@ class SystemInfoNormalizer implements DenormalizerInterface, NormalizerInterface
             $data->{'Name'} = $object->getName();
         }
         if (null !== $object->getLabels()) {
-            $values_5 = [];
-            foreach ($object->getLabels() as $value_5) {
-                $values_5[] = $value_5;
+            $values_3 = [];
+            foreach ($object->getLabels() as $value_3) {
+                $values_3[] = $value_3;
             }
-            $data->{'Labels'} = $values_5;
+            $data->{'Labels'} = $values_3;
         }
         if (null !== $object->getExperimentalBuild()) {
             $data->{'ExperimentalBuild'} = $object->getExperimentalBuild();
@@ -414,11 +414,11 @@ class SystemInfoNormalizer implements DenormalizerInterface, NormalizerInterface
             $data->{'ClusterAdvertise'} = $object->getClusterAdvertise();
         }
         if (null !== $object->getRuntimes()) {
-            $values_6 = new \stdClass();
-            foreach ($object->getRuntimes() as $key => $value_6) {
-                $values_6->{$key} = $this->normalizer->normalize($value_6, 'json', $context);
+            $values_4 = new \stdClass();
+            foreach ($object->getRuntimes() as $key => $value_4) {
+                $values_4->{$key} = $this->normalizer->normalize($value_4, 'json', $context);
             }
-            $data->{'Runtimes'} = $values_6;
+            $data->{'Runtimes'} = $values_4;
         }
         if (null !== $object->getDefaultRuntime()) {
             $data->{'DefaultRuntime'} = $object->getDefaultRuntime();
@@ -445,11 +445,21 @@ class SystemInfoNormalizer implements DenormalizerInterface, NormalizerInterface
             $data->{'InitCommit'} = $this->normalizer->normalize($object->getInitCommit(), 'json', $context);
         }
         if (null !== $object->getSecurityOptions()) {
-            $values_7 = [];
-            foreach ($object->getSecurityOptions() as $value_7) {
-                $values_7[] = $value_7;
+            $values_5 = [];
+            foreach ($object->getSecurityOptions() as $value_5) {
+                $values_5[] = $value_5;
             }
-            $data->{'SecurityOptions'} = $values_7;
+            $data->{'SecurityOptions'} = $values_5;
+        }
+        if (null !== $object->getProductLicense()) {
+            $data->{'ProductLicense'} = $object->getProductLicense();
+        }
+        if (null !== $object->getWarnings()) {
+            $values_6 = [];
+            foreach ($object->getWarnings() as $value_6) {
+                $values_6[] = $value_6;
+            }
+            $data->{'Warnings'} = $values_6;
         }
 
         return $data;

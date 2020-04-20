@@ -41,19 +41,11 @@ class NodeDescription
      */
     protected $tLSInfo;
 
-    /**
-     * @return string
-     */
     public function getHostname(): ?string
     {
         return $this->hostname;
     }
 
-    /**
-     * @param string $hostname
-     *
-     * @return self
-     */
     public function setHostname(?string $hostname): self
     {
         $this->hostname = $hostname;
@@ -63,8 +55,6 @@ class NodeDescription
 
     /**
      * Platform represents the platform (Arch/OS).
-     *
-     * @return Platform
      */
     public function getPlatform(): ?Platform
     {
@@ -73,10 +63,6 @@ class NodeDescription
 
     /**
      * Platform represents the platform (Arch/OS).
-     *
-     * @param Platform $platform
-     *
-     * @return self
      */
     public function setPlatform(?Platform $platform): self
     {
@@ -87,8 +73,6 @@ class NodeDescription
 
     /**
      * An object describing the resources which can be advertised by a node and requested by a task.
-     *
-     * @return ResourceObject
      */
     public function getResources(): ?ResourceObject
     {
@@ -97,10 +81,6 @@ class NodeDescription
 
     /**
      * An object describing the resources which can be advertised by a node and requested by a task.
-     *
-     * @param ResourceObject $resources
-     *
-     * @return self
      */
     public function setResources(?ResourceObject $resources): self
     {
@@ -111,8 +91,6 @@ class NodeDescription
 
     /**
      * EngineDescription provides information about an engine.
-     *
-     * @return EngineDescription
      */
     public function getEngine(): ?EngineDescription
     {
@@ -121,10 +99,6 @@ class NodeDescription
 
     /**
      * EngineDescription provides information about an engine.
-     *
-     * @param EngineDescription $engine
-     *
-     * @return self
      */
     public function setEngine(?EngineDescription $engine): self
     {
@@ -135,8 +109,6 @@ class NodeDescription
 
     /**
      * Information about the issuer of leaf TLS certificates and the trusted root CA certificate.
-     *
-     * @return TLSInfo
      */
     public function getTLSInfo(): ?TLSInfo
     {
@@ -145,10 +117,6 @@ class NodeDescription
 
     /**
      * Information about the issuer of leaf TLS certificates and the trusted root CA certificate.
-     *
-     * @param TLSInfo $tLSInfo
-     *
-     * @return self
      */
     public function setTLSInfo(?TLSInfo $tLSInfo): self
     {

@@ -14,10 +14,6 @@ class ContainerList extends \Jane\OpenApiRuntime\Client\BaseEndpoint implements 
 {
     /**
      * Returns a list of containers. For details on the format, see [the inspect endpoint](#operation/ContainerInspect).
-
-    Note that it uses a different, smaller representation of a container than inspecting a single container. For example,
-    the list of linked containers is not propagated .
-
      *
      * @param array $queryParameters {
      *
@@ -26,22 +22,6 @@ class ContainerList extends \Jane\OpenApiRuntime\Client\BaseEndpoint implements 
      *     @var bool $size return the size of container as fields `SizeRw` and `SizeRootFs`
      *     @var string $filters Filters to process on the container list, encoded as JSON (a `map[string][]string`). For example, `{"status": ["paused"]}` will only return paused containers. Available filters:
 
-    - `ancestor`=(`<image-name>[:<tag>]`, `<image id>`, or `<image@digest>`)
-    - `before`=(`<container id>` or `<container name>`)
-    - `expose`=(`<port>[/<proto>]`|`<startport-endport>/[<proto>]`)
-    - `exited=<int>` containers with exit code of `<int>`
-    - `health`=(`starting`|`healthy`|`unhealthy`|`none`)
-    - `id=<ID>` a container's ID
-    - `isolation=`(`default`|`process`|`hyperv`) (Windows daemon only)
-    - `is-task=`(`true`|`false`)
-    - `label=key` or `label="key=value"` of a container label
-    - `name=<name>` a container's name
-    - `network`=(`<network id>` or `<network name>`)
-    - `publish`=(`<port>[/<proto>]`|`<startport-endport>/[<proto>]`)
-    - `since`=(`<container id>` or `<container name>`)
-    - `status=`(`created`|`restarting`|`running`|`removing`|`paused`|`exited`|`dead`)
-    - `volume`=(`<volume name>` or `<mount point destination>`)
-
      * }
      */
     public function __construct(array $queryParameters = [])
@@ -49,7 +29,8 @@ class ContainerList extends \Jane\OpenApiRuntime\Client\BaseEndpoint implements 
         $this->queryParameters = $queryParameters;
     }
 
-    use \Jane\OpenApiRuntime\Client\AmpArtaxEndpointTrait, \Jane\OpenApiRuntime\Client\Psr7HttplugEndpointTrait;
+    use \Jane\OpenApiRuntime\Client\AmpArtaxEndpointTrait;
+    use \Jane\OpenApiRuntime\Client\Psr7HttplugEndpointTrait;
 
     public function getMethod(): string
     {
@@ -61,7 +42,7 @@ class ContainerList extends \Jane\OpenApiRuntime\Client\BaseEndpoint implements 
         return '/containers/json';
     }
 
-    public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, \Http\Message\StreamFactory $streamFactory = null): array
+    public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
     {
         return [[], null];
     }
@@ -91,9 +72,9 @@ class ContainerList extends \Jane\OpenApiRuntime\Client\BaseEndpoint implements 
      * @throws \Docker\API\Exception\ContainerListBadRequestException
      * @throws \Docker\API\Exception\ContainerListInternalServerErrorException
      *
-     * @return null|\Docker\API\Model\ContainerSummaryItem[]
+     * @return \Docker\API\Model\ContainerSummaryItem[]|null
      */
-    protected function transformResponseBody(string $body, int $status, \Symfony\Component\Serializer\SerializerInterface $serializer)
+    protected function transformResponseBody(string $body, int $status, \Symfony\Component\Serializer\SerializerInterface $serializer, ?string $contentType)
     {
         if (200 === $status) {
             return $serializer->deserialize($body, 'Docker\\API\\Model\\ContainerSummaryItem[]', 'json');

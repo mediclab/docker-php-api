@@ -29,7 +29,7 @@ class ContainersIdJsonGetResponse200Normalizer implements DenormalizerInterface,
 
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof \Docker\API\Model\ContainersIdJsonGetResponse200;
+        return get_class($data) === 'Docker\\API\\Model\\ContainersIdJsonGetResponse200';
     }
 
     public function denormalize($data, $class, $format = null, array $context = [])
@@ -55,7 +55,7 @@ class ContainersIdJsonGetResponse200Normalizer implements DenormalizerInterface,
             $object->setArgs($values);
         }
         if (property_exists($data, 'State') && $data->{'State'} !== null) {
-            $object->setState($this->denormalizer->denormalize($data->{'State'}, 'Docker\\API\\Model\\ContainersIdJsonGetResponse200State', 'json', $context));
+            $object->setState($this->denormalizer->denormalize($data->{'State'}, 'Docker\\API\\Model\\ContainerState', 'json', $context));
         }
         if (property_exists($data, 'Image') && $data->{'Image'} !== null) {
             $object->setImage($data->{'Image'});
@@ -72,9 +72,6 @@ class ContainersIdJsonGetResponse200Normalizer implements DenormalizerInterface,
         if (property_exists($data, 'LogPath') && $data->{'LogPath'} !== null) {
             $object->setLogPath($data->{'LogPath'});
         }
-        if (property_exists($data, 'Node') && $data->{'Node'} !== null) {
-            $object->setNode($data->{'Node'});
-        }
         if (property_exists($data, 'Name') && $data->{'Name'} !== null) {
             $object->setName($data->{'Name'});
         }
@@ -83,6 +80,9 @@ class ContainersIdJsonGetResponse200Normalizer implements DenormalizerInterface,
         }
         if (property_exists($data, 'Driver') && $data->{'Driver'} !== null) {
             $object->setDriver($data->{'Driver'});
+        }
+        if (property_exists($data, 'Platform') && $data->{'Platform'} !== null) {
+            $object->setPlatform($data->{'Platform'});
         }
         if (property_exists($data, 'MountLabel') && $data->{'MountLabel'} !== null) {
             $object->setMountLabel($data->{'MountLabel'});
@@ -94,7 +94,11 @@ class ContainersIdJsonGetResponse200Normalizer implements DenormalizerInterface,
             $object->setAppArmorProfile($data->{'AppArmorProfile'});
         }
         if (property_exists($data, 'ExecIDs') && $data->{'ExecIDs'} !== null) {
-            $object->setExecIDs($data->{'ExecIDs'});
+            $values_1 = [];
+            foreach ($data->{'ExecIDs'} as $value_1) {
+                $values_1[] = $value_1;
+            }
+            $object->setExecIDs($values_1);
         }
         if (property_exists($data, 'HostConfig') && $data->{'HostConfig'} !== null) {
             $object->setHostConfig($this->denormalizer->denormalize($data->{'HostConfig'}, 'Docker\\API\\Model\\HostConfig', 'json', $context));
@@ -109,11 +113,11 @@ class ContainersIdJsonGetResponse200Normalizer implements DenormalizerInterface,
             $object->setSizeRootFs($data->{'SizeRootFs'});
         }
         if (property_exists($data, 'Mounts') && $data->{'Mounts'} !== null) {
-            $values_1 = [];
-            foreach ($data->{'Mounts'} as $value_1) {
-                $values_1[] = $this->denormalizer->denormalize($value_1, 'Docker\\API\\Model\\MountPoint', 'json', $context);
+            $values_2 = [];
+            foreach ($data->{'Mounts'} as $value_2) {
+                $values_2[] = $this->denormalizer->denormalize($value_2, 'Docker\\API\\Model\\MountPoint', 'json', $context);
             }
-            $object->setMounts($values_1);
+            $object->setMounts($values_2);
         }
         if (property_exists($data, 'Config') && $data->{'Config'} !== null) {
             $object->setConfig($this->denormalizer->denormalize($data->{'Config'}, 'Docker\\API\\Model\\ContainerConfig', 'json', $context));
@@ -162,9 +166,6 @@ class ContainersIdJsonGetResponse200Normalizer implements DenormalizerInterface,
         if (null !== $object->getLogPath()) {
             $data->{'LogPath'} = $object->getLogPath();
         }
-        if (null !== $object->getNode()) {
-            $data->{'Node'} = $object->getNode();
-        }
         if (null !== $object->getName()) {
             $data->{'Name'} = $object->getName();
         }
@@ -173,6 +174,9 @@ class ContainersIdJsonGetResponse200Normalizer implements DenormalizerInterface,
         }
         if (null !== $object->getDriver()) {
             $data->{'Driver'} = $object->getDriver();
+        }
+        if (null !== $object->getPlatform()) {
+            $data->{'Platform'} = $object->getPlatform();
         }
         if (null !== $object->getMountLabel()) {
             $data->{'MountLabel'} = $object->getMountLabel();
@@ -184,7 +188,11 @@ class ContainersIdJsonGetResponse200Normalizer implements DenormalizerInterface,
             $data->{'AppArmorProfile'} = $object->getAppArmorProfile();
         }
         if (null !== $object->getExecIDs()) {
-            $data->{'ExecIDs'} = $object->getExecIDs();
+            $values_1 = [];
+            foreach ($object->getExecIDs() as $value_1) {
+                $values_1[] = $value_1;
+            }
+            $data->{'ExecIDs'} = $values_1;
         }
         if (null !== $object->getHostConfig()) {
             $data->{'HostConfig'} = $this->normalizer->normalize($object->getHostConfig(), 'json', $context);
@@ -199,11 +207,11 @@ class ContainersIdJsonGetResponse200Normalizer implements DenormalizerInterface,
             $data->{'SizeRootFs'} = $object->getSizeRootFs();
         }
         if (null !== $object->getMounts()) {
-            $values_1 = [];
-            foreach ($object->getMounts() as $value_1) {
-                $values_1[] = $this->normalizer->normalize($value_1, 'json', $context);
+            $values_2 = [];
+            foreach ($object->getMounts() as $value_2) {
+                $values_2[] = $this->normalizer->normalize($value_2, 'json', $context);
             }
-            $data->{'Mounts'} = $values_1;
+            $data->{'Mounts'} = $values_2;
         }
         if (null !== $object->getConfig()) {
             $data->{'Config'} = $this->normalizer->normalize($object->getConfig(), 'json', $context);
